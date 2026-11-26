@@ -4,8 +4,13 @@ import { registerInfrastructureHandlers } from '../events/registerHandlers.js';
 import { eventBus } from '../events/index.js';
 import { logger } from '../logging/index.js';
 import { sleep } from '../../shared/utils/index.js';
+import { createStatusServer, closeStatusServer } from './statusServer.js';
 
 let running = false;
+let statusServer;
+
+// PM2 forks through ProcessContainerFork.js, so argv[1] is not our script.
+const invokedScript = process.env.pm_exec_path || process.argv[1] || '';
 
 export async function startWorker() {
   if (running) return;
@@ -13,6 +18,7 @@ export async function startWorker() {
   await connectDatabase();
   registerInfrastructureHandlers();
   logger.info('Event worker started');
+  if (process.send) process.send('ready');
 
   while (running) {
     try {
@@ -30,16 +36,24 @@ export async function stopWorker() {
   running = false;
 }
 
-if (process.argv[1]?.endsWith('worker.js')) {
+if (invokedScript.endsWith('worker.js')) {
+  statusServer = createStatusServer('worker');
+  if (process.send) process.send('ready');
+
   startWorker().catch(async (error) => {
     logger.fatal({ err: error }, 'worker failed to start');
     await disconnectDatabase();
+    await closeStatusServer(statusServer);
     process.exit(1);
   });
 
-  process.on('SIGTERM', async () => {
+  const shutdown = async () => {
     await stopWorker();
     await disconnectDatabase();
+    await closeStatusServer(statusServer);
     process.exit(0);
-  });
+  };
+
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 }

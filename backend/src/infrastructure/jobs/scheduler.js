@@ -11,6 +11,7 @@ import { Media } from '../../modules/media/media.model.js';
 import { Property } from '../../modules/properties/property.model.js';
 import { User } from '../../modules/users/user.model.js';
 import { propertiesService } from '../../modules/properties/index.js';
+import { createStatusServer, closeStatusServer } from './statusServer.js';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const HOUR_MS = 60 * 60 * 1000;
@@ -170,6 +171,10 @@ export async function runScheduledJobs(names = null) {
 }
 
 let running = false;
+let statusServer;
+
+// PM2 forks through ProcessContainerFork.js, so argv[1] is not our script.
+const invokedScript = process.env.pm_exec_path || process.argv[1] || '';
 
 export async function startScheduler() {
   if (running) return;
@@ -177,6 +182,7 @@ export async function startScheduler() {
   await connectDatabase();
   const lastRun = new Map();
   logger.info('Scheduler started');
+  if (process.send) process.send('ready');
 
   while (running) {
     const now = Date.now();
@@ -200,7 +206,7 @@ export async function stopScheduler() {
   running = false;
 }
 
-if (process.argv[1]?.endsWith('scheduler.js')) {
+if (invokedScript.endsWith('scheduler.js')) {
   if (process.argv.includes('--once')) {
     connectDatabase()
       .then(() => runScheduledJobs())
@@ -211,16 +217,24 @@ if (process.argv[1]?.endsWith('scheduler.js')) {
         process.exit(1);
       });
   } else {
+    statusServer = createStatusServer('scheduler');
+    if (process.send) process.send('ready');
+
     startScheduler().catch(async (error) => {
       logger.fatal({ err: error }, 'scheduler failed to start');
       await disconnectDatabase();
+      await closeStatusServer(statusServer);
       process.exit(1);
     });
 
-    process.on('SIGTERM', async () => {
+    const shutdown = async () => {
       await stopScheduler();
       await disconnectDatabase();
+      await closeStatusServer(statusServer);
       process.exit(0);
-    });
+    };
+
+    process.on('SIGTERM', shutdown);
+    process.on('SIGINT', shutdown);
   }
 }
