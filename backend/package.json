@@ -1,0 +1,43 @@
+{
+  "name": "property-rental-platform-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Modular MERN property rental platform backend (V1)",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "worker": "node src/infrastructure/jobs/worker.js",
+    "scheduler": "node src/infrastructure/jobs/scheduler.js",
+    "seed": "node src/database/seeders/index.js",
+    "indexes": "node src/database/indexes/index.js",
+    "migrate": "node src/database/migrations/index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit --runInBand",
+    "test:integration": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/integration --runInBand",
+    "lint": "node --check src/app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "multer": "^2.0.2",
+    "nanoid": "^5.0.9",
+    "nodemailer": "^6.10.0",
+    "pino": "^9.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

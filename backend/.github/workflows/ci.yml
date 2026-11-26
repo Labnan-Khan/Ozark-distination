@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      # Exposed through env (not the secrets context) so the step-level condition is valid.
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      JWT_SECRET: ci-jwt-secret-at-least-16-characters
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Syntax check
+        run: find src -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+
+      - name: Tests
+        run: npm test
+
+      - name: Migration dry-run
+        if: ${{ env.MONGODB_URI != '' }}
+        run: npm run migrate -- --dry-run

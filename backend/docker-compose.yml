@@ -1,0 +1,21 @@
+# MongoDB is supplied by MONGODB_URI in .env (for example, Atlas); no local mongo service is required.
+x-app: &app
+  build: .
+  image: property-rental-api:local
+  env_file: .env
+  restart: unless-stopped
+
+services:
+  api:
+    <<: *app
+    command: npm start
+    ports:
+      - "${PORT:-5000}:${PORT:-5000}"
+
+  worker:
+    <<: *app
+    command: npm run worker
+
+  scheduler:
+    <<: *app
+    command: npm run scheduler
