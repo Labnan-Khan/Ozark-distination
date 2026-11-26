@@ -1,0 +1,21 @@
+{
+  "name": "property-rental-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "V1 frontend for the property rental platform",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "vite": "^6.0.5"
+  }
+}
