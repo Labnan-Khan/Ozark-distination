@@ -26,7 +26,7 @@ A MongoDB replica set is required for multi-document transactions (registration,
 - **Request correlation:** `x-request-id` (and optional `x-correlation-id`) are accepted on input and echoed on responses; the same `requestId` is attached to error responses and logs.
 - **Errors:** the `{ success: false, error: { code, message, details, requestId } }` envelope keeps `requestId` for support lookups; stack traces are only included outside production.
 - **External tracker extension point:** V1 has no third-party error tracker. To add one, hook the error branch of `src/middleware/errorHandler.js` and/or add a pino destination in `src/infrastructure/logging/index.js`; never log credentials or raw request bodies.
-- **Long-running processes:** `npm start` (API), `npm run worker` (outbox/email dispatcher), and `npm run scheduler` (recurring maintenance) are separate processes and should be deployed and monitored independently with the same environment. `docker-compose.yml` defines all three.
+- **Long-running processes:** `npm start` (API), `npm run worker` (outbox/email dispatcher), and `npm run scheduler` (recurring maintenance) are separate processes and should be deployed and monitored independently with the same environment. `docker-compose.yml` defines all three; `ecosystem.config.cjs` defines the same three processes for PM2.
 
 ## Scripts
 
@@ -37,6 +37,11 @@ A MongoDB replica set is required for multi-document transactions (registration,
 | `npm run worker` | Event/job dispatcher worker |
 | `npm run scheduler` | Availability projection, session cleanup, media cleanup, booking reminders |
 | `npm run scheduler -- --once` | Run every scheduled job once and exit |
+| `npm run pm2:start` | Start API, worker and scheduler under PM2 |
+| `npm run pm2:stop` | Stop all PM2-managed V1 processes |
+| `npm run pm2:delete` | Remove all PM2-managed V1 processes |
+| `npm run pm2:logs` | Tail PM2 logs |
+| `npm run pm2:save` | Persist the current PM2 process list |
 | `npm run seed` | Seed admin, categories, amenities, settings |
 | `npm run indexes` | Create all declared indexes |
 | `npm run migrate` | Apply migrations (`npm run migrate -- down`, `-- --dry-run`, `-- --version 1`) |
