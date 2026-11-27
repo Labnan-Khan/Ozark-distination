@@ -1,6 +1,7 @@
 import { APPROVAL_STATUS, AVAILABILITY_STATUS, LISTING_STATUS } from '../../shared/constants/index.js';
 import { conflict, notFound } from '../../shared/errors/index.js';
 import { buildPaginationMeta, parsePagination } from '../../shared/utils/index.js';
+import { mediaService } from '../media/index.js';
 import { Property } from '../properties/property.model.js';
 import { Favorite } from './favorite.model.js';
 
@@ -73,7 +74,7 @@ export const favoritesService = {
       .lean()
       .exec();
 
-    const items = favorites.map((favorite) => favorite.propertyId).filter(Boolean);
+    const items = await mediaService.attachCovers(favorites.map((favorite) => favorite.propertyId).filter(Boolean));
     const meta = buildPaginationMeta({ page, limit, total });
     return { items, properties: items, meta };
   },

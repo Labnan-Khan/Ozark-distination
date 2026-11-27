@@ -1399,10 +1399,12 @@ export const propertiesService = {
       actorMeta(actor),
       correlationId || actor?.correlationId || null
     ), ['media', 'items']);
-    await Property.updateOne(
-      { _id: property._id },
-      { $set: { 'media.imageCount': Math.min(maxImages, currentCount + created.length) } }
-    );
+    const cover = created.find((item) => item?.isCover);
+    const update = { $set: { 'media.imageCount': Math.min(maxImages, currentCount + created.length) } };
+    if (cover && !property.media?.coverMediaId) {
+      update.$set['media.coverMediaId'] = cover._id;
+    }
+    await Property.updateOne({ _id: property._id }, update);
     return created;
   },
 

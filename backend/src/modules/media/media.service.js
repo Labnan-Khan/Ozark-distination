@@ -49,6 +49,7 @@ export const mediaService = {
     if (!images.length) throw badRequest('At least one file is required');
 
     const existing = await Media.find({ attachedTo: target, status: 'active' }).sort({ displayOrder: 1, createdAt: 1 });
+    const needsCover = target.type === 'property' && !existing.some((item) => item.isCover);
     if (target.type === 'property') {
       const maxImages = appConfig.defaults.maxImagesPerProperty;
       if (existing.length + images.length > maxImages) {
@@ -79,7 +80,7 @@ export const mediaService = {
         attachedTo: target,
         ...uploadedFields(images[index], result),
         displayOrder: displayOrder + index,
-        isCover: false,
+        isCover: needsCover && index === 0,
         status: 'active',
         uploadedBy
       })));
@@ -103,6 +104,50 @@ export const mediaService = {
   async getCover(type, id) {
     const attachedTo = normalizeAttachedTo({ type, id });
     return Media.findOne({ attachedTo, status: 'active', isCover: true }).sort({ displayOrder: 1, createdAt: 1 });
+  },
+
+  /** First active image per property: explicit cover first, otherwise upload order. */
+  async coversFor(ids) {
+    const objectIds = (Array.isArray(ids) ? ids : [ids])
+      .filter((id) => mongoose.Types.ObjectId.isValid(id))
+      .map((id) => (id instanceof mongoose.Types.ObjectId ? id : new mongoose.Types.ObjectId(String(id))));
+    if (!objectIds.length) return new Map();
+
+    const documents = await Media.find({
+      'attachedTo.type': 'property',
+      'attachedTo.id': { $in: objectIds },
+      status: 'active',
+      resourceType: MEDIA_RESOURCE_TYPES.IMAGE
+    })
+      .sort({ isCover: -1, displayOrder: 1, createdAt: 1 })
+      .lean()
+      .exec();
+
+    const covers = new Map();
+    for (const document of documents) {
+      const key = String(document.attachedTo.id);
+      if (covers.has(key)) continue;
+      covers.set(key, {
+        id: String(document._id),
+        mediaId: String(document._id),
+        url: document.url,
+        secureUrl: document.secureUrl,
+        displayOrder: document.displayOrder,
+        isCover: Boolean(document.isCover)
+      });
+    }
+    return covers;
+  },
+
+  /** Adds `coverImage` to list responses without an N+1 request per item. */
+  async attachCovers(items) {
+    const list = Array.isArray(items) ? items : [];
+    if (!list.length) return list;
+    const covers = await this.coversFor(list.map((item) => item?._id || item?.id));
+    return list.map((item) => ({
+      ...item,
+      coverImage: covers.get(String(item?._id || item?.id)) || null
+    }));
   },
 
   async setCover(type, id, mediaId) {

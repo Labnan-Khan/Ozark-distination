@@ -2,6 +2,7 @@ import { ACCOUNT_STATUS, APPROVAL_STATUS, LISTING_STATUS } from '../../shared/co
 import { badRequest } from '../../shared/errors/index.js';
 import { buildPaginationMeta, parsePagination, toDateOnly, toObjectId } from '../../shared/utils/index.js';
 import { AvailabilityReservation } from '../bookings/reservation.model.js';
+import { mediaService } from '../media/index.js';
 import { Property } from '../properties/property.model.js';
 import { User } from '../users/user.model.js';
 
@@ -222,8 +223,11 @@ async function simpleSearch(filter, pagination) {
     .limit(pagination.limit)
     .lean()
     .exec();
+  const items = await mediaService.attachCovers(
+    documents.map((document) => ({ ...document, id: String(document._id) }))
+  );
   return {
-    items: documents.map((document) => ({ ...document, id: String(document._id) })),
+    items,
     meta: buildPaginationMeta({ page: pagination.page, limit: pagination.limit, total })
   };
 }
@@ -248,7 +252,7 @@ async function runPipeline({ filter, countFilter, query, pagination, geoStage = 
     { $project: buildProjection(includeDistance) }
   );
 
-  const items = await Property.aggregate(pipeline).exec();
+  const items = await mediaService.attachCovers(await Property.aggregate(pipeline).exec());
   return {
     items,
     meta: buildPaginationMeta({ page: pagination.page, limit: pagination.limit, total })

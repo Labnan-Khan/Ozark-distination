@@ -14,7 +14,9 @@ export function PropertyCard({ property }) {
     : Array.isArray(property.media?.items)
       ? property.media.items
       : [];
-  const cover = mediaList.find((item) => item.isCover) || mediaList[0];
+  const cover = property.coverImage
+    || mediaList.find((item) => item.isCover)
+    || mediaList[0];
   const propertyId = property.id || property._id;
   const rates = property.pricing?.rates || [];
   const currency = property.pricing?.currency || 'PKR';
