@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { money } from '../api/client.js';
 
-export function attributeValue(property, key) {
+function attributeValue(property, key) {
   const attribute = property?.attributes?.find((item) => item.key === key);
   if (!attribute) return null;
   if (attribute.value !== undefined) return attribute.value;
