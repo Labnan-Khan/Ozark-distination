@@ -29,7 +29,7 @@ export function Home() {
       minPrice: majorToMinor(filters.minPrice),
       maxPrice: majorToMinor(filters.maxPrice),
       page,
-      limit: 12
+      limit: 20
     });
     api.get(`/search/properties${query}`)
       .then(({ data }) => { if (active) setResult(data || {}); })
