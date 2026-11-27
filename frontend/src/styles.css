@@ -1,12 +1,12 @@
 :root {
-  --red: #ff385c;
-  --red-dark: #d70466;
-  --red-gradient: linear-gradient(90deg, #e61e4d 0%, #e31c5f 50%, #d70466 100%);
+  --accent: #40886c;
+  --accent-dark: #2f6b54;
+  --accent-gradient: linear-gradient(135deg, #2f6b54 0%, #40886c 100%);
   --ink: #222222;
   --muted: #717171;
   --line: #dddddd;
   --soft: #f7f7f7;
-  --green: #008a05;
+  --green: #2f6b54;
   --shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
 
   font-family: "Nunito Sans", "Avenir Next", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -68,17 +68,12 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
   white-space: nowrap;
 }
 
-.brand-mark {
-  width: 34px;
+.brand-logo {
+  display: block;
+  width: 46px;
   height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px 12px 12px 4px;
-  background: var(--red-gradient);
-  color: #fff;
-  font-weight: 900;
-  font-size: 19px;
-  letter-spacing: -1px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .brand-text {
@@ -116,7 +111,7 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 
 .nav a:hover { color: var(--ink); }
 .nav a.active { color: var(--ink); font-weight: 700; }
-.nav a.active::after { background: var(--red); }
+.nav a.active::after { background: var(--accent); }
 
 .nav-actions {
   display: flex;
@@ -132,7 +127,7 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 .badge-link { position: relative; }
 .badge {
   display: inline-block;
-  background: var(--red);
+  background: var(--accent);
   color: white;
   border-radius: 999px;
   padding: 0 6px;
@@ -181,14 +176,14 @@ p { margin: 0 0 12px; }
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: var(--red-gradient);
+  background: var(--accent-gradient);
   color: #fff;
   border: 0;
   border-radius: 999px;
   padding: 11px 18px;
   font-weight: 800;
   font-size: 14px;
-  box-shadow: 0 4px 12px rgba(225, 28, 95, 0.24);
+  box-shadow: 0 4px 12px rgba(64, 136, 108, 0.22);
   transition: transform 0.15s ease, filter 0.15s ease;
 }
 .button:hover { color: #fff; filter: brightness(1.04); transform: translateY(-1px); }
@@ -218,8 +213,8 @@ textarea { min-height: 100px; resize: vertical; }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.14);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(64, 136, 108, 0.16);
 }
 
 label {
@@ -242,7 +237,7 @@ label {
 
 .eyebrow {
   display: inline-block;
-  color: var(--red);
+  color: var(--accent);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.16em;
@@ -319,11 +314,11 @@ label {
   border: 0;
   border-radius: 999px;
   padding: 13px 20px;
-  background: var(--red-gradient);
+  background: var(--accent-gradient);
   color: #fff;
   font-weight: 800;
   font-size: 14px;
-  box-shadow: 0 4px 12px rgba(225, 28, 95, 0.24);
+  box-shadow: 0 4px 12px rgba(64, 136, 108, 0.22);
 }
 
 .search-submit span { font-size: 18px; margin-right: 4px; }

@@ -31,7 +31,7 @@ export function Layout() {
     <div className="app-shell">
       <header className="topbar">
         <Link className="brand" to="/">
-          <span className="brand-mark" aria-hidden="true">O</span>
+          <img className="brand-logo" src="/ozarkIcon.png" alt="" aria-hidden="true" />
           <span className="brand-text">Ozark Destination</span>
         </Link>
         <nav className="nav">
