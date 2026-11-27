@@ -86,7 +86,12 @@ export function PropertyDetail() {
   }, [rates, form.rentalPeriod, form.checkIn, form.checkOut]);
 
   const images = useMemo(() => {
-    const list = media.length ? media : property?.media || [];
+    const candidate = media.length ? media : property?.media;
+    const list = Array.isArray(candidate)
+      ? candidate
+      : Array.isArray(candidate?.items)
+        ? candidate.items
+        : [];
     return [...list].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
   }, [media, property]);
 
@@ -211,7 +216,10 @@ export function PropertyDetail() {
               <ul className="attribute-list">
                 {attributes.map((attribute) => (
                   <li key={attribute.key}>
-                    <strong>{attribute.key.replace(/_/g, ' ')}:</strong> {String(attribute.value ?? '—')}
+                    <strong>{attribute.key.replace(/_/g, ' ')}:</strong> {String(
+                      attribute.value ?? attribute.numberValue ?? attribute.stringValue
+                      ?? attribute.booleanValue ?? attribute.dateValue ?? attribute.arrayValue?.[0] ?? '—'
+                    )}
                   </li>
                 ))}
               </ul>

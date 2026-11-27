@@ -35,6 +35,20 @@ export function AdminProperties() {
 
   useEffect(() => { load(); }, [pendingOnly]);
 
+  const publishProperty = async (property) => {
+    setBusyId(idOf(property));
+    setError('');
+    try {
+      await api.post(`/properties/${idOf(property)}/publish`, {});
+      setNotice('Property published and visible in public search.');
+      await load();
+    } catch (err) {
+      setError(errorText(err));
+    } finally {
+      setBusyId('');
+    }
+  };
+
   const reviewProperty = async (property, decision) => {
     const body = decision === 'approve'
       ? { note: window.prompt('Optional approval note', '') || null }
@@ -44,7 +58,9 @@ export function AdminProperties() {
     setError('');
     try {
       await api.post(`/admin/properties/${idOf(property)}/${decision}`, body);
-      setNotice(`Property ${decision === 'approve' ? 'approved' : 'rejected'}.`);
+      setNotice(decision === 'approve'
+        ? 'Property approved. Publish it to make it visible in public search.'
+        : 'Property rejected.');
       await load();
     } catch (err) {
       setError(errorText(err));
@@ -111,6 +127,9 @@ export function AdminProperties() {
                       </div>
                     </div>
                     <div className="actions">
+                      {property.approvalStatus === 'approved' && property.listingStatus === 'draft' && (
+                        <button className="button small" disabled={busyId === propertyId} onClick={() => publishProperty(property)}>Publish</button>
+                      )}
                       <button className="button small" disabled={busyId === propertyId} onClick={() => reviewProperty(property, 'approve')}>Approve</button>
                       <button className="button small danger" disabled={busyId === propertyId} onClick={() => reviewProperty(property, 'reject')}>Reject</button>
                     </div>

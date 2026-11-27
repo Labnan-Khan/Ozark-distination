@@ -418,6 +418,9 @@ export function OwnerProperties() {
                   {['draft', 'rejected'].includes(property.approvalStatus) && (
                     <button className="button small" onClick={() => runAction(property, 'submit', {}, undefined)}>Submit for approval</button>
                   )}
+                  {property.approvalStatus === 'approved' && property.listingStatus === 'draft' && (
+                    <button className="button small" onClick={() => runAction(property, 'publish', {}, undefined)}>Publish</button>
+                  )}
                   {property.listingStatus === 'published' && (
                     <button className="button small secondary" onClick={() => runAction(property, 'archive', { reason: 'Owner requested archive' }, undefined)}>Archive</button>
                   )}

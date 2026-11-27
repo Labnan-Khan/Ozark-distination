@@ -9,7 +9,12 @@ export function attributeValue(property, key) {
 }
 
 export function PropertyCard({ property }) {
-  const cover = property.media?.find((item) => item.isCover) || property.media?.[0];
+  const mediaList = Array.isArray(property.media)
+    ? property.media
+    : Array.isArray(property.media?.items)
+      ? property.media.items
+      : [];
+  const cover = mediaList.find((item) => item.isCover) || mediaList[0];
   const propertyId = property.id || property._id;
   const rates = property.pricing?.rates || [];
   const currency = property.pricing?.currency || 'PKR';
