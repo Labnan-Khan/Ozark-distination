@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { Footer } from './Footer.jsx';
 
 export function Layout() {
   const { user, isAuthenticated, hasRole, logout } = useAuth();
@@ -60,7 +61,7 @@ export function Layout() {
       <main className="page">
         <Outlet />
       </main>
-      <footer className="footer">V1 API · <code>/api/v1</code></footer>
+      <Footer />
     </div>
   );
 }
