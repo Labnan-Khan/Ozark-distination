@@ -19,7 +19,6 @@ export function PropertyCard({ property }) {
     || mediaList[0];
   const propertyId = property.id || property._id;
   const rates = property.pricing?.rates || [];
-  const currency = property.pricing?.currency || 'PKR';
   const bedrooms = attributeValue(property, 'bedrooms');
 
   return (
@@ -43,7 +42,7 @@ export function PropertyCard({ property }) {
         </p>
         <div className="price-row">
           {rates.slice(0, 2).map((rate) => (
-            <span key={rate.period}>{money(rate.amountMinor, currency)}/{rate.period}</span>
+            <span key={rate.period}>{money(rate.amountMinor)}/{rate.period}</span>
           ))}
         </div>
       </div>

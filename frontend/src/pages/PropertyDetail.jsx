@@ -71,7 +71,6 @@ export function PropertyDetail() {
   }, [id, isAuthenticated, hasRole]);
 
   const rates = property?.pricing?.rates || [];
-  const currency = property?.pricing?.currency || 'PKR';
   const periods = property?.rentalPeriods || rates.map((rate) => rate.period) || [];
 
   const estimate = useMemo(() => {
@@ -251,7 +250,7 @@ export function PropertyDetail() {
           {rates.slice(0, 4).map((rate) => (
             <div className="price-line" key={rate.period}>
               <span className="muted">{rate.period}</span>
-              <strong>{money(rate.amountMinor, currency)}</strong>
+              <strong>{money(rate.amountMinor)}</strong>
             </div>
           ))}
           <form className="stack" onSubmit={submitBooking} style={{ marginTop: 16 }}>
@@ -280,7 +279,7 @@ export function PropertyDetail() {
             {estimate && (
               <div className="price-line total">
                 <span>Estimate ({estimate.units} {form.rentalPeriod})</span>
-                <span>{money(estimate.totalMinor, currency)}</span>
+                <span>{money(estimate.totalMinor)}</span>
               </div>
             )}
             <button type="button" className="button secondary" onClick={checkAvailability} disabled={checking}>

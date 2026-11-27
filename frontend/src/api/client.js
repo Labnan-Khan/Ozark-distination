@@ -135,11 +135,14 @@ export function queryString(params) {
   return query ? `?${query}` : '';
 }
 
-export const money = (amountMinor, currency = 'PKR') => {
+// Display-only: stored amounts stay unchanged, but the UI lists prices in dollars.
+const DISPLAY_CURRENCY = 'USD';
+
+export const money = (amountMinor) => {
   const amount = Number(amountMinor || 0) / 100;
   try {
-    return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(amount);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: DISPLAY_CURRENCY }).format(amount);
   } catch {
-    return `${amount.toFixed(2)} ${currency}`;
+    return `${amount.toFixed(2)} USD`;
   }
 };

@@ -121,7 +121,7 @@ export function Bookings({ mode = 'customer' }) {
                     <span>Ref: <strong>{booking.reference}</strong></span>
                     <span>{formatDate(booking.checkInDate)} → {formatDate(booking.checkOutDate)}</span>
                     <span>{booking.rentalPeriod}</span>
-                    <span>{money(booking.priceSnapshot?.totalMinor, booking.priceSnapshot?.currency)}</span>
+                    <span>{money(booking.priceSnapshot?.totalMinor)}</span>
                     <span>Created {formatDateTime(booking.createdAt)}</span>
                     {booking.cancellation?.status !== 'none' && <span>Cancellation: {booking.cancellation?.status}</span>}
                   </div>
