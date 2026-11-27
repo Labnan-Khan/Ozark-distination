@@ -17,21 +17,12 @@ const attribute = (key, label, dataType, extra = {}) => ({
 });
 
 const categories = [
-  { code: 'house', name: 'House', group: CATEGORY_GROUPS.RESIDENTIAL, periods: ['daily', 'monthly', 'yearly'], attributes: [attribute('bedrooms', 'Bedrooms', ATTRIBUTE_TYPES.INTEGER, { required: true, min: 1 }), attribute('bathrooms', 'Bathrooms', ATTRIBUTE_TYPES.INTEGER), attribute('floors', 'Floors', ATTRIBUTE_TYPES.INTEGER), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER), attribute('furnishing', 'Furnishing status', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'unfurnished', label: 'Unfurnished' }, { value: 'semi', label: 'Semi-furnished' }, { value: 'furnished', label: 'Furnished' }] })] },
-  { code: 'apartment', name: 'Apartment', group: CATEGORY_GROUPS.RESIDENTIAL, periods: ['daily', 'monthly', 'yearly'], attributes: [attribute('bedrooms', 'Bedrooms', ATTRIBUTE_TYPES.INTEGER, { required: true }), attribute('bathrooms', 'Bathrooms', ATTRIBUTE_TYPES.INTEGER), attribute('floorNumber', 'Floor number', ATTRIBUTE_TYPES.INTEGER), attribute('furnishing', 'Furnishing status', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'unfurnished', label: 'Unfurnished' }, { value: 'furnished', label: 'Furnished' }] })] },
-  { code: 'villa', name: 'Villa', group: CATEGORY_GROUPS.RESIDENTIAL, periods: ['daily', 'monthly', 'yearly'], attributes: [attribute('bedrooms', 'Bedrooms', ATTRIBUTE_TYPES.INTEGER), attribute('bathrooms', 'Bathrooms', ATTRIBUTE_TYPES.INTEGER), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'room', name: 'Room', group: CATEGORY_GROUPS.RESIDENTIAL, periods: ['daily', 'weekly', 'monthly'], attributes: [attribute('bedCount', 'Bed count', ATTRIBUTE_TYPES.INTEGER), attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'office', name: 'Office', group: CATEGORY_GROUPS.COMMERCIAL, periods: ['monthly', 'yearly'], attributes: [attribute('floorNumber', 'Floor number', ATTRIBUTE_TYPES.INTEGER), attribute('officeArea', 'Office area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' }), attribute('meetingRooms', 'Meeting rooms', ATTRIBUTE_TYPES.INTEGER), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'shop', name: 'Shop', group: CATEGORY_GROUPS.COMMERCIAL, periods: ['monthly', 'yearly'], attributes: [attribute('shopArea', 'Shop area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' }), attribute('floorNumber', 'Floor number', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'commercial_building', name: 'Commercial building', group: CATEGORY_GROUPS.COMMERCIAL, periods: ['monthly', 'yearly'], attributes: [attribute('floors', 'Floors', ATTRIBUTE_TYPES.INTEGER), attribute('totalArea', 'Total area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' })] },
-  { code: 'hotel', name: 'Hotel', group: CATEGORY_GROUPS.HOSPITALITY, periods: ['daily', 'weekly'], attributes: [attribute('roomType', 'Room type', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'standard', label: 'Standard' }, { value: 'deluxe', label: 'Deluxe' }, { value: 'suite', label: 'Suite' }] }), attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER), attribute('bedCount', 'Bed count', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'hostel', name: 'Hostel', group: CATEGORY_GROUPS.HOSPITALITY, periods: ['daily', 'weekly', 'monthly'], attributes: [attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER), attribute('bedCount', 'Bed count', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'guest_house', name: 'Guest house', group: CATEGORY_GROUPS.HOSPITALITY, periods: ['daily', 'weekly', 'monthly'], attributes: [attribute('bedrooms', 'Bedrooms', ATTRIBUTE_TYPES.INTEGER), attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'factory', name: 'Factory', group: CATEGORY_GROUPS.INDUSTRIAL, periods: ['monthly', 'yearly'], attributes: [attribute('area', 'Area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' }), attribute('powerCapacity', 'Power capacity', ATTRIBUTE_TYPES.STRING)] },
-  { code: 'warehouse', name: 'Warehouse', group: CATEGORY_GROUPS.INDUSTRIAL, periods: ['monthly', 'yearly'], attributes: [attribute('area', 'Area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' }), attribute('loadingDocks', 'Loading docks', ATTRIBUTE_TYPES.INTEGER)] },
-  { code: 'agricultural_land', name: 'Agricultural land', group: CATEGORY_GROUPS.LAND, periods: ['monthly', 'yearly'], attributes: [attribute('landArea', 'Land area', ATTRIBUTE_TYPES.NUMBER, { unit: 'acre' }), attribute('landType', 'Land type', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'crop', label: 'Crop' }, { value: 'orchard', label: 'Orchard' }] }), attribute('roadAccess', 'Road access', ATTRIBUTE_TYPES.BOOLEAN)] },
-  { code: 'residential_plot', name: 'Residential plot', group: CATEGORY_GROUPS.LAND, periods: ['yearly'], attributes: [attribute('landArea', 'Land area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' }), attribute('roadAccess', 'Road access', ATTRIBUTE_TYPES.BOOLEAN)] },
-  { code: 'commercial_plot', name: 'Commercial plot', group: CATEGORY_GROUPS.LAND, periods: ['yearly'], attributes: [attribute('landArea', 'Land area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' }), attribute('roadAccess', 'Road access', ATTRIBUTE_TYPES.BOOLEAN)] }
+  { code: 'campsite', name: 'Campsite', group: CATEGORY_GROUPS.HOSPITALITY, sortOrder: 1, periods: ['daily', 'weekly', 'monthly'], attributes: [attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER), attribute('tentSites', 'Tent sites', ATTRIBUTE_TYPES.INTEGER), attribute('hasFirePit', 'Fire pit', ATTRIBUTE_TYPES.BOOLEAN), attribute('hasRestrooms', 'Restrooms', ATTRIBUTE_TYPES.BOOLEAN), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER)] },
+  { code: 'rv_hookup_site', name: 'RV Hookup Site', group: CATEGORY_GROUPS.OTHER, sortOrder: 2, periods: ['daily', 'weekly', 'monthly', 'yearly'], attributes: [attribute('hookupType', 'Hookup type', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'electric', label: 'Electric' }, { value: 'water', label: 'Water' }, { value: 'full', label: 'Full hookup' }] }), attribute('maxRvLength', 'Maximum RV length', ATTRIBUTE_TYPES.NUMBER, { unit: 'ft' }), attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER)] },
+  { code: 'house', name: 'House', group: CATEGORY_GROUPS.RESIDENTIAL, sortOrder: 3, periods: ['daily', 'weekly', 'monthly', 'yearly'], attributes: [attribute('bedrooms', 'Bedrooms', ATTRIBUTE_TYPES.INTEGER, { required: true, min: 1 }), attribute('bathrooms', 'Bathrooms', ATTRIBUTE_TYPES.INTEGER), attribute('floors', 'Floors', ATTRIBUTE_TYPES.INTEGER), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER), attribute('furnishing', 'Furnishing status', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'unfurnished', label: 'Unfurnished' }, { value: 'semi', label: 'Semi-furnished' }, { value: 'furnished', label: 'Furnished' }] })] },
+  { code: 'boat_house', name: 'Boat house', group: CATEGORY_GROUPS.HOSPITALITY, sortOrder: 4, periods: ['daily', 'weekly', 'monthly', 'yearly'], attributes: [attribute('bedrooms', 'Bedrooms', ATTRIBUTE_TYPES.INTEGER), attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER), attribute('dockAccess', 'Dock access', ATTRIBUTE_TYPES.BOOLEAN), attribute('boatLength', 'Boat length', ATTRIBUTE_TYPES.NUMBER, { unit: 'ft' }), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER)] },
+  { code: 'venue', name: 'Venue', group: CATEGORY_GROUPS.COMMERCIAL, sortOrder: 5, periods: ['daily', 'weekly', 'monthly', 'yearly'], attributes: [attribute('guestCapacity', 'Guest capacity', ATTRIBUTE_TYPES.INTEGER, { required: true }), attribute('area', 'Area', ATTRIBUTE_TYPES.NUMBER, { unit: 'sqft' }), attribute('eventType', 'Event type', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'wedding', label: 'Wedding' }, { value: 'corporate', label: 'Corporate' }, { value: 'party', label: 'Party' }, { value: 'other', label: 'Other' }] }), attribute('indoor', 'Indoor', ATTRIBUTE_TYPES.BOOLEAN), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER)] },
+  { code: 'condominium', name: 'Condominium', group: CATEGORY_GROUPS.RESIDENTIAL, sortOrder: 6, periods: ['daily', 'monthly', 'yearly'], attributes: [attribute('bedrooms', 'Bedrooms', ATTRIBUTE_TYPES.INTEGER, { required: true }), attribute('bathrooms', 'Bathrooms', ATTRIBUTE_TYPES.INTEGER), attribute('floorNumber', 'Floor number', ATTRIBUTE_TYPES.INTEGER), attribute('furnishing', 'Furnishing status', ATTRIBUTE_TYPES.ENUM, { options: [{ value: 'unfurnished', label: 'Unfurnished' }, { value: 'furnished', label: 'Furnished' }] }), attribute('parkingSpaces', 'Parking spaces', ATTRIBUTE_TYPES.INTEGER)] }
 ];
 
 const amenities = ['wifi', 'parking', 'air_conditioning', 'swimming_pool', 'security', 'elevator', 'furnished', 'garden', 'gym'];
@@ -65,15 +56,21 @@ export async function seedDatabase() {
           name: item.name,
           group: item.group,
           isActive: true,
+          sortOrder: item.sortOrder,
           allowedRentalPeriods: item.periods,
           attributeSchema: item.attributes,
           createdBy: admin._id
         },
-        $setOnInsert: { code: item.code, attributeSchemaVersion: 1, sortOrder: 0 }
+        $setOnInsert: { code: item.code, attributeSchemaVersion: 1 }
       },
       { upsert: true }
     );
   }
+
+  await PropertyCategory.updateMany(
+    { code: { $nin: categories.map((item) => item.code) }, isActive: true },
+    { $set: { isActive: false } }
+  );
 
   for (const code of amenities) {
     await Amenity.updateOne(
