@@ -163,6 +163,12 @@ export function PropertyDetail() {
 
   const attributes = property.attributes || [];
   const location = property.location?.coordinates;
+  const mapSrc = location?.length === 2 ? (() => {
+    const [lng, lat] = location;
+    const spread = 0.02;
+    const bbox = [lng - spread, lat - spread, lng + spread, lat + spread].join(',');
+    return `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${lat}%2C${lng}`;
+  })() : null;
   const bookable = property.approvalStatus === 'approved'
     && property.listingStatus === 'published'
     && property.availability?.isOpenForBooking !== false;
@@ -224,13 +230,18 @@ export function PropertyDetail() {
                 ))}
               </ul>
             )}
-            {location?.length === 2 && (
-              <p className="small" style={{ marginTop: 16 }}>
-                <a href={`https://www.google.com/maps?q=${location[1]},${location[0]}`} target="_blank" rel="noreferrer">
-                  View on map
-                </a>
-                {' · '} {location[1]}, {location[0]}
-              </p>
+            {mapSrc && (
+              <div className="location-block">
+                <h3>Where you’ll be</h3>
+                <p className="muted small">Approximate location · {location[1]}, {location[0]}</p>
+                <iframe
+                  className="map-frame"
+                  title={`Map of ${property.title}`}
+                  src={mapSrc}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
             )}
           </div>
         </div>

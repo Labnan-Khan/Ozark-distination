@@ -300,7 +300,7 @@ export function OwnerProperties() {
       {showCreate && (
         <form className="panel stack" onSubmit={submit}>
           <h2>New property</h2>
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
+          <div className="form-grid two">
             <div className="field">
               <label htmlFor="property-title">Title *</label>
               <input id="property-title" required minLength={5} maxLength={150} value={form.title} onChange={setField('title')} />
@@ -319,7 +319,7 @@ export function OwnerProperties() {
           </div>
 
           <h3>Address</h3>
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
+          <div className="form-grid three">
             <div className="field"><label>Country *</label><input required value={form.country} onChange={setField('country')} /></div>
             <div className="field"><label>State / province</label><input value={form.stateProvince} onChange={setField('stateProvince')} /></div>
             <div className="field"><label>City *</label><input required value={form.city} onChange={setField('city')} /></div>
@@ -329,13 +329,13 @@ export function OwnerProperties() {
           </div>
 
           <h3>Location (optional)</h3>
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
+          <div className="form-grid two">
             <div className="field"><label>Latitude</label><input type="number" step="any" value={form.latitude} onChange={setField('latitude')} /></div>
             <div className="field"><label>Longitude</label><input type="number" step="any" value={form.longitude} onChange={setField('longitude')} /></div>
           </div>
 
           <h3>Attributes</h3>
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
+          <div className="form-grid three">
             {(selectedCategory?.attributeSchema || [])
               .filter((definition) => !definition.deprecated)
               .map((definition) => attributeInput(definition, form.attributes[definition.key], setAttribute))}
@@ -343,7 +343,7 @@ export function OwnerProperties() {
           </div>
 
           <h3>Pricing</h3>
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
+          <div className="form-grid three">
             <div className="field">
               <label>Default period</label>
               <select value={form.period} onChange={setField('period')}>

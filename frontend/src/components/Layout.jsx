@@ -30,7 +30,10 @@ export function Layout() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <Link className="brand" to="/">Ozark <span>Destination</span></Link>
+        <Link className="brand" to="/">
+          <span className="brand-mark" aria-hidden="true">O</span>
+          <span className="brand-text">Ozark Destination</span>
+        </Link>
         <nav className="nav">
           <NavLink to="/">Explore</NavLink>
           {hasRole('customer') && <NavLink to="/bookings">My bookings</NavLink>}
